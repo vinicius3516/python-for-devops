@@ -20,3 +20,7 @@ A proposta é que você consiga acompanhar passo a passo e, ao final, tenha uma 
     - [List Comprehensions no Python](#list-comprehensions-no-python)
     - [Unpacking no Python](guia-de-sobrevivencia/README.md#unpacking-no-python)
     - [Funções no Python](guia-de-sobrevivencia/README.md#funções-no-python) 
+
+- **[Boas Praticas](boas-praticas/README.md)**
+    - [Virtual Environment (venv)](boas-praticas/README.md#virtual-environment-venv)
+    - [Operador `in` em Python](boas-praticas/README.md#operador-in-em-python)
