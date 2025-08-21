@@ -6,6 +6,9 @@
 
 - [Virtual Environment (venv)](#virtual-environment-venv)
 - [Operador `in` em Python](#operador-in-em-python)
+- [Ordem dos Imports em Python](#ordem-dos-imports-em-python)
+- [Tratamento de Erros em Python](#tratamento-de-erros-em-python)
+- [Type Hints em Python](#type-hints-em-python)
 </details>
 
 ## Virtual Environment (venv)
@@ -190,3 +193,316 @@ print("us-east-1" in config)  # False
 ---
 
 O operador `in` é simples, mas extremamente poderoso. Ele deixa o código mais **limpo, direto e pythonico**.
+
+&nbsp;
+
+## Ordem dos Imports em Python
+
+> ### Por que a ordem dos imports importa?
+
+A ordem em que você organiza seus **imports** no Python pode parecer detalhe, mas na prática:
+
+- **Melhora a legibilidade** do código.
+- **Facilita a manutenção** e revisão por outros desenvolvedores.
+- Evita **conflitos** ou confusões entre bibliotecas internas, externas e módulos locais.
+- Segue padrões reconhecidos pela comunidade, como o **PEP 8**.
+
+---
+
+> ### Ordem recomendada
+
+A ordem geralmente usada (e recomendada pelo **PEP 8**) é:
+
+1. **Módulos da biblioteca padrão (Python nativo)**
+    
+    Importados primeiro.
+    
+    ```python
+    import sys
+    import os
+    import math
+    import random
+    import datetime
+    import time
+    ```
+    
+2. **Módulos de terceiros (instalados via pip, conda, etc.)**
+    
+    Importados depois.
+    
+    ```python
+    import requests
+    import numpy
+    import pandas
+    import matplotlib
+    import seaborn
+    import scipy
+    ```
+    
+3. **Módulos locais (código do próprio projeto)**
+    
+    Importados por último.
+    
+    ```python
+    import utils
+    import models
+    ```
+    
+
+---
+
+> ### Ordem alfabética
+
+Além dessa separação por **categoria**, é boa prática organizar os imports de cada grupo em **ordem alfabética**.
+
+Isso facilita localizar rapidamente um módulo, evita duplicidade e melhora a consistência.
+
+Exemplo:
+
+```python
+# Correto
+import datetime
+import math
+import os
+import random
+import sys
+import time
+```
+
+---
+
+> ### O que evitar
+
+- Imports desorganizados ou misturados:
+    
+    ```python
+    import requests
+    import os
+    import pandas
+    import math
+    import utils
+    import numpy
+    ```
+    
+- Imports duplicados.
+- Imports desnecessários (importar algo que não é usado no código).
+
+---
+
+> ### Dicas práticas
+
+- Use ferramentas como **isort** ou **black** para formatar automaticamente os imports.
+    
+    ```bash
+    pip install isort black
+    isort meu_arquivo.py
+    black meu_arquivo.py
+    ```
+    
+- Isso garante que a equipe mantenha um padrão consistente.
+
+---
+
+> ### Resumindo
+
+1. Primeiro **biblioteca padrão**.
+2. Depois **módulos de terceiros**.
+3. Por último, **módulos locais**.
+4. Sempre em **ordem alfabética dentro de cada grupo**.
+
+Assim, seu código fica **mais limpo, legível e pythonico** .
+
+&nbsp;
+
+## Tratamento de Erros em Python
+
+> ### O que é tratamento de erros?
+
+Em Python, o tratamento de erros é feito com a estrutura **try-except**.
+
+Ela permite capturar exceções (erros que ocorrem durante a execução) e tratá-las de forma controlada, evitando que o programa quebre inesperadamente.
+
+Isso é essencial em ambientes DevOps, onde scripts e automações precisam ser resilientes, mesmo quando encontram problemas.
+
+---
+
+> ### Estrutura básica
+
+```python
+try:
+    # Código que pode gerar erro
+except TipoDeErro:
+    # Código a executar se o erro ocorrer
+```
+
+Podemos ter vários `except` para tratar diferentes tipos de erro.
+
+---
+
+> ### Exemplo prático (DevOps)
+
+```python
+try:
+    with open('arquivo.txt', 'r') as f:
+        conteudo = f.read()
+        print(conteudo)
+except FileNotFoundError:
+    print("Arquivo nao encontrado.")
+```
+
+> ### Explicação passo a passo
+
+1. **try** → executa o código que pode falhar (abrir o arquivo).
+2. **with open('arquivo.txt', 'r') as f** → tenta abrir o arquivo no modo leitura (`'r'`).
+3. **conteudo = f.read()** → lê o conteúdo do arquivo.
+4. **except FileNotFoundError** → se o arquivo não existir, o erro é capturado.
+5. **print("Arquivo nao encontrado.")** → mensagem amigável para o usuário.
+
+Sem o `try-except`, esse código quebraria e interromperia a execução do script.
+
+---
+
+> ### Outros exemplos úteis
+
+1. Tratando múltiplos erros
+
+```python
+try:
+    resultado = 10 / 0
+except ZeroDivisionError:
+    print("Erro: Divisão por zero.")
+except Exception as e:
+    print(f"Ocorreu um erro inesperado: {e}")
+```
+
+2. Uso com rede (DevOps real)
+
+```python
+import requests
+
+try:
+    resposta = requests.get("https://meu-servidor.dev/health")
+    print("Status:", resposta.status_code)
+except requests.ConnectionError:
+    print("Erro: Não foi possível conectar ao servidor.")
+```
+
+---
+
+> ### O que evitar
+
+- Usar `except:` sem especificar o tipo de erro → captura tudo e pode esconder problemas graves.
+- Não tratar exceções → o programa quebra e impacta pipelines, automações ou serviços.
+
+---
+
+> ### Dicas práticas
+
+- Sempre trate exceções específicas primeiro (ex.: `FileNotFoundError`, `ZeroDivisionError`).
+- Use `Exception as e` apenas para capturar erros genéricos e logar a causa.
+- Em scripts DevOps, combine `try-except` com logs para facilitar troubleshooting.
+
+---
+
+> ### Resumindo
+
+1. **try-except** permite capturar e tratar erros.
+2. Evita que o programa quebre inesperadamente.
+3. Use exceções específicas sempre que possível.
+4. É fundamental em automações DevOps para criar scripts mais **seguros e resilientes**.
+
+&nbsp;
+
+## Type Hints em Python
+
+
+> ### O que são Type Hints?
+
+**Type Hints** (anotações de tipo) são uma forma de indicar, de maneira explícita, quais tipos de dados uma função **espera receber** e **retorna**.
+
+Eles não mudam a execução do Python (que é uma linguagem dinamicamente tipada), mas ajudam na **legibilidade, manutenção e qualidade do código**.
+
+Além disso, são extremamente úteis em **IDEs** (como VSCode, PyCharm) e em ferramentas de análise estática (como `mypy`), que conseguem detectar erros antes mesmo da execução.
+
+---
+
+> ### Sintaxe básica
+
+```python
+def nome_funcao(parametro: tipo) -> tipo_retorno:
+    ...
+```
+
+- `parametro: tipo` → define o tipo esperado do parâmetro.
+- `> tipo_retorno` → define o tipo de dado que será retornado pela função.
+
+---
+
+> ### Exemplo prático (DevOps)
+
+```python
+def servidor_ativo(nome: str) -> bool:
+    servidores_ativos = ["web01", "db01", "cache01"]
+    return nome in servidores_ativos
+
+print(servidor_ativo("web01"))   # True
+print(servidor_ativo("worker"))  # False
+```
+
+Explicação
+
+- `nome: str` → o parâmetro `nome` deve ser uma string.
+- `> bool` → a função sempre retorna um valor booleano (`True` ou `False`).
+- Isso deixa claro o contrato da função: **entrada string → saída booleano**.
+
+---
+
+> ### Exemplos variados
+
+### 1. Função com múltiplos parâmetros
+
+```python
+def soma(a: int, b: int) -> int:
+    return a + b
+```
+
+### 2. Função que retorna nada (`None`)
+
+```python
+def log_evento(evento: str) -> None:
+    print(f"Evento registrado: {evento}")
+```
+
+### 3. Uso com listas e dicionários
+
+```python
+from typing import List, Dict
+
+def listar_containers(containers: List[Dict[str, str]]) -> List[str]:
+    return [c["name"] for c in containers]
+```
+
+---
+
+> ### O que evitar
+
+- Não usar **type hints inconsistentes** (ex.: declarar `int` mas retornar `str`).
+- Usar type hints apenas "por obrigação" sem seguir padrões.
+
+---
+
+> ### Dicas práticas
+
+- Sempre use **type hints** em funções públicas (expostas em libs, APIs ou automações).
+- Combine type hints com ferramentas de análise estática como `mypy`.
+- Prefira `Optional[tipo]` quando o parâmetro pode ser `None`.
+- Em projetos grandes de DevOps, ajuda a reduzir erros em automações complexas.
+
+---
+
+> ### Resumindo
+
+1. **Type Hints** tornam o código mais claro, legível e confiável.
+2. São úteis para IDEs, linters e análise estática.
+3. Boas práticas → use em funções públicas, declare entrada e saída.
+4. Muito valioso em projetos DevOps que envolvem automações críticas.

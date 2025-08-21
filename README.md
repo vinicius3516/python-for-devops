@@ -24,3 +24,6 @@ A proposta é que você consiga acompanhar passo a passo e, ao final, tenha uma 
 - **[Boas Praticas](boas-praticas/README.md)**
     - [Virtual Environment (venv)](boas-praticas/README.md#virtual-environment-venv)
     - [Operador `in` em Python](boas-praticas/README.md#operador-in-em-python)
+    - [Ordem dos Imports em Python](boas-praticas/README.md#ordem-dos-imports-em-python)
+    - [Tratamento de Erros em Python](boas-praticas/README.md#tratamento-de-erros-em-python)
+    - [Type Hints em Python](boas-praticas/README.md#type-hints-em-python)
